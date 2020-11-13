@@ -6,6 +6,7 @@ import RegisterPage from './pages/Register'
 import CouponPage from './pages/Coupon'
 import { Button } from 'semantic-ui-react'
 import axios from 'axios'
+import apiUrl from './constants/api'
 // {
 //   displayName: "I am golf",
 //   pictureUrl: "https://profile.line-scdn.net/0h_1EPtmydAB54KSo72Yd_SURsDnMPBwZWAB0bL1wuCStTSUEfEUtHL1t-XC5XSUZPFx1PcVkvWi1d",
@@ -39,7 +40,7 @@ function App() {
   const getUserProfile = async () => {
     const profile = await liff.getProfile()
     await setProfile(profile)
-    const response = await axios.get(`http://localhost:5000/api/v1/users/${ profile.userId }`)
+    const response = await axios.get(`${apiUrl}${ profile.userId }`)
 
     if (response.data.status) {
       setRegister(true)
@@ -49,7 +50,7 @@ function App() {
 
   useEffect(() => {
     // initailLift()
-    axios.get(`http://localhost:5000/api/v1/users/${ profile.userId }`).then((response) => {
+    axios.get(`${apiUrl}${ profile.userId }`).then((response) => {
       console.log(response)
         if (response.data.status) {
           setRegister(true)

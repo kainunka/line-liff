@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Container, Grid, Image, Dropdown, Input, Form, Button, Checkbox } from 'semantic-ui-react'
 import ModalTerm from '../components/ModalTerm'
 import axios from 'axios'
+import apiUrl from '../constants/api'
 
 const RegisterPage = props => {
     const [dataForm, setDataForm] = useState({
@@ -49,11 +50,11 @@ const RegisterPage = props => {
             verifyRegister: false
         }
 
-       const { data } = await axios.post('http://localhost:5000/api/v1/users', params)
+       const { data } = await axios.post(apiUrl, params)
 
        if (data.status) {
             params.verifyRegister = true
-            await axios.put(`http://localhost:5000/api/v1/users/${data.data.id}`, params)
+            await axios.put(`${apiUrl}${data.data.id}`, params)
         }
     }
 
