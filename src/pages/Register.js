@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Container, Grid, Image, Dropdown, Input, Form, Button, Checkbox } from 'semantic-ui-react'
 import ModalTerm from '../components/ModalTerm'
+import axios from 'axios'
 
 const RegisterPage = props => {
     const [dataForm, setDataForm] = useState({
@@ -26,8 +27,34 @@ const RegisterPage = props => {
         y.push({ key: i,value: i,text: i})
     }
 
-    const onSubmit = () => {
-       console.log(dataForm)
+    const onSubmit = async () => {
+        let params = {
+            userID: props.profile.userId,
+            displayName: props.profile.displayName,
+            displayImage: props.profile.pictureUrl,
+            detail: dataForm,
+            coupon: [{
+                used: false,
+                point: 1500,
+                price: 100,
+                image: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Korean_Gimchi01.jpg',
+                text: 'E- COUPON ส่วนลดกิมจิ'
+            }, {
+                used: true,
+                point: 2000,
+                price: 200,
+                image: 'https://www.smeleader.com/wp-content/uploads/2015/01/%e0%b8%ad%e0%b8%a2%e0%b8%b2%e0%b8%81%e0%b8%82%e0%b8%b2%e0%b8%a2%e0%b8%8b%e0%b8%b9%e0%b8%8a%e0%b8%b4-JJ-Sushi-Foods-%e0%b9%81%e0%b8%ab%e0%b8%a5%e0%b9%88%e0%b8%87%e0%b8%82%e0%b8%b2%e0%b8%a2%e0%b8%a7%e0%b8%b1%e0%b8%95%e0%b8%96%e0%b8%b8%e0%b8%94%e0%b8%b4%e0%b8%9a%e0%b8%a3%e0%b8%b2%e0%b8%84%e0%b8%b2%e0%b8%aa%e0%b9%88%e0%b8%87%e0%b9%80%e0%b8%81%e0%b8%a3%e0%b8%94%e0%b9%80%e0%b8%ad-%e0%b8%9b%e0%b8%b1%e0%b9%89%e0%b8%99%e0%b8%9d%e0%b8%b1%e0%b8%99%e0%b8%a3%e0%b9%89%e0%b8%b2%e0%b8%99%e0%b8%8b%e0%b8%b9%e0%b8%8a%e0%b8%b4-2.jpg',
+                text: 'E- COUPON ส่วนลดซูชิ'
+            }],
+            verifyRegister: false
+        }
+
+       const { data } = await axios.post('http://localhost:5000/api/v1/users', params)
+
+       if (data.status) {
+            params.verifyRegister = true
+            await axios.put(`http://localhost:5000/api/v1/users/${data.data.id}`, params)
+        }
     }
 
 
