@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, Header, Modal, Icon } from 'semantic-ui-react'
 
-const ModalTerm = ({ termRender }) => {
+const ModalTerm = ({ termRender, onCheckTerm }) => {
   const [open, setOpen] = React.useState(false)
 
   return (
     <Modal
       closeIcon
-      open={open}
+      open={ onCheckTerm ? open : false }
       trigger={termRender}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}

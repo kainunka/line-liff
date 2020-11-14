@@ -55,3 +55,7 @@ input[type=number] {
   color: #ffffff !important;
 }
 
+.color-red {
+  color: red;
+}
+

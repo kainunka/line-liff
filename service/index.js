@@ -32,7 +32,7 @@ app.get("/api/"+version+"/users", (req, res) => {
         if (err) return res.json({ status: false, message: "cannot get all users", code: err });
 
         if (results) {
-            res.json({ status: true, message:"Successfully get product.", data: results })
+            res.json({ status: true, message:"Successfully get users.", data: results })
         }
     })
 })

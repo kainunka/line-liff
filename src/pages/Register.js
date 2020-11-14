@@ -12,6 +12,9 @@ const RegisterPage = props => {
         year: new Date().getFullYear(),
         term: false
     })
+    const [validate, setValidate] = useState({
+        term: false
+    })
     const { profile } = props
     let d = []
     let m = []
@@ -29,39 +32,49 @@ const RegisterPage = props => {
     }
 
     const onSubmit = async () => {
-        let params = {
-            userID: props.profile.userId,
-            displayName: props.profile.displayName,
-            displayImage: props.profile.pictureUrl,
-            detail: dataForm,
-            profilePoint: 0,
-            coupon: [{
-                used: false,
-                point: 1500,
-                price: 100,
-                image: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Korean_Gimchi01.jpg',
-                text: 'E- COUPON ส่วนลดกิมจิ',
-                dateTime: new Date().getTime()
-            }, {
-                used: true,
-                point: 2000,
-                price: 200,
-                image: 'https://www.smeleader.com/wp-content/uploads/2015/01/%e0%b8%ad%e0%b8%a2%e0%b8%b2%e0%b8%81%e0%b8%82%e0%b8%b2%e0%b8%a2%e0%b8%8b%e0%b8%b9%e0%b8%8a%e0%b8%b4-JJ-Sushi-Foods-%e0%b9%81%e0%b8%ab%e0%b8%a5%e0%b9%88%e0%b8%87%e0%b8%82%e0%b8%b2%e0%b8%a2%e0%b8%a7%e0%b8%b1%e0%b8%95%e0%b8%96%e0%b8%b8%e0%b8%94%e0%b8%b4%e0%b8%9a%e0%b8%a3%e0%b8%b2%e0%b8%84%e0%b8%b2%e0%b8%aa%e0%b9%88%e0%b8%87%e0%b9%80%e0%b8%81%e0%b8%a3%e0%b8%94%e0%b9%80%e0%b8%ad-%e0%b8%9b%e0%b8%b1%e0%b9%89%e0%b8%99%e0%b8%9d%e0%b8%b1%e0%b8%99%e0%b8%a3%e0%b9%89%e0%b8%b2%e0%b8%99%e0%b8%8b%e0%b8%b9%e0%b8%8a%e0%b8%b4-2.jpg',
-                text: 'E- COUPON ส่วนลดซูชิ',
-                dateTime: new Date().getTime()
-            }],
-            verifyRegister: false
-        }
+        if (dataForm.term) {
+            let params = {
+                userID: props.profile.userId,
+                displayName: props.profile.displayName,
+                displayImage: props.profile.pictureUrl,
+                detail: dataForm,
+                profilePoint: 0,
+                coupon: [{
+                    used: false,
+                    point: 1500,
+                    price: 100,
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/7/76/Korean_Gimchi01.jpg',
+                    text: 'E- COUPON ส่วนลดกิมจิ',
+                    dateTime: new Date().getTime()
+                }, {
+                    used: true,
+                    point: 2000,
+                    price: 200,
+                    image: 'https://www.smeleader.com/wp-content/uploads/2015/01/%e0%b8%ad%e0%b8%a2%e0%b8%b2%e0%b8%81%e0%b8%82%e0%b8%b2%e0%b8%a2%e0%b8%8b%e0%b8%b9%e0%b8%8a%e0%b8%b4-JJ-Sushi-Foods-%e0%b9%81%e0%b8%ab%e0%b8%a5%e0%b9%88%e0%b8%87%e0%b8%82%e0%b8%b2%e0%b8%a2%e0%b8%a7%e0%b8%b1%e0%b8%95%e0%b8%96%e0%b8%b8%e0%b8%94%e0%b8%b4%e0%b8%9a%e0%b8%a3%e0%b8%b2%e0%b8%84%e0%b8%b2%e0%b8%aa%e0%b9%88%e0%b8%87%e0%b9%80%e0%b8%81%e0%b8%a3%e0%b8%94%e0%b9%80%e0%b8%ad-%e0%b8%9b%e0%b8%b1%e0%b9%89%e0%b8%99%e0%b8%9d%e0%b8%b1%e0%b8%99%e0%b8%a3%e0%b9%89%e0%b8%b2%e0%b8%99%e0%b8%8b%e0%b8%b9%e0%b8%8a%e0%b8%b4-2.jpg',
+                    text: 'E- COUPON ส่วนลดซูชิ',
+                    dateTime: new Date().getTime()
+                }],
+                verifyRegister: false
+            }
 
-       const { data } = await axios.post(apiUrl, params)
+            const { data } = await axios.post(apiUrl, params)
 
-       if (data.status) {
-            params.verifyRegister = true
-            await axios.put(`${apiUrl}${data.data.id}`, params)
-            window.location.reload()
+            if (data.status) {
+                params.verifyRegister = true
+                await axios.put(`${apiUrl}${data.data.id}`, params)
+                window.location.reload()
+            }
+        } else {
+            setValidate({ term: true })
         }
     }
 
+    const onChangeTerm = (data, e) => {
+        setDataForm({...dataForm, term: e.checked});
+        if (e.checked) {
+            setValidate({ term: false })
+        }
+    }
 
     return (
         <Container>
@@ -93,13 +106,23 @@ const RegisterPage = props => {
 
                     <Grid.Row>
                         <Grid.Column className="center-text">
-                            <ModalTerm termRender={ <Checkbox label="ยอมรับและตกลงเงื่อนไข" checked={ dataForm.term } onChange={(data, e) => setDataForm({...dataForm, term: e.checked}) } /> } />
+                            <ModalTerm termRender={ <Checkbox label="ยอมรับข้อตกลงและเงื่อนไข" checked={ dataForm.term } onChange={(data, e) => onChangeTerm(data, e) } /> } onCheckTerm={ dataForm.term  } />
                         </Grid.Column>
                     </Grid.Row>
 
+                    { validate.term ? 
                     <Grid.Row>
                         <Grid.Column className="center-text">
-                            <Button type="submit">ลงทะเบียน</Button>
+                            <span className="color-red">กรุณายอมรับข้อตกลงการลงทะเบียน</span>
+                        </Grid.Column>
+                    </Grid.Row>
+                    : null }
+
+                    <Grid.Row>
+                        <Grid.Column className="center-text">
+                            <Button type="submit" className="bg-yellow">
+                                <span className="color-black">ลงทะเบียน</span>
+                            </Button>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
