@@ -47,6 +47,10 @@ input[type=number] {
   background-color: #F5D80D !important;
 }
 
+.bg-green {
+  background-color: #00B900 !important;
+}
+
 .color-black {
   color: #000000 !important;
 }
@@ -58,4 +62,6 @@ input[type=number] {
 .color-red {
   color: red;
 }
+
+
 

@@ -4,7 +4,7 @@ import liff from '@line/liff';
 import 'semantic-ui-css/semantic.min.css'
 import RegisterPage from './pages/Register'
 import CouponPage from './pages/Coupon'
-import { Button } from 'semantic-ui-react'
+import LoginPage from './pages/Login'
 import axios from 'axios'
 import apiUrl from './constants/api'
 import Loading from './components/Loading'
@@ -63,8 +63,7 @@ function App() {
 
   return Object.keys(profile).length > 0 ?
       isLoading ? <Loading /> : !isRegister ? <RegisterPage profile={ profile } /> : <CouponPage profile={ profile } dataProfile={ dataProfile } />
-      :
-      <Button onClick={ login }>กรุณเข้าสู่ระบบ</Button>
+      : <LoginPage login={ login } />
 }
 
 export default App;
