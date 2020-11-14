@@ -15,6 +15,7 @@ const RegisterPage = props => {
     const [validate, setValidate] = useState({
         term: false
     })
+    const [loading, setLoading] = useState(false)
     const { profile } = props
     let d = []
     let m = []
@@ -32,6 +33,7 @@ const RegisterPage = props => {
     }
 
     const onSubmit = async () => {
+        setLoading(true)
         if (dataForm.term) {
             let params = {
                 userID: props.profile.userId,
@@ -62,9 +64,11 @@ const RegisterPage = props => {
             if (data.status) {
                 params.verifyRegister = true
                 await axios.put(`${apiUrl}${data.data.id}`, params)
+                setLoading(false)
                 window.location.reload()
             }
         } else {
+            setLoading(false)
             setValidate({ term: true })
         }
     }
@@ -120,7 +124,7 @@ const RegisterPage = props => {
 
                     <Grid.Row>
                         <Grid.Column className="center-text">
-                            <Button type="submit" className="bg-yellow">
+                            <Button loading={loading} type="submit" className="bg-yellow">
                                 <span className="color-black">ลงทะเบียน</span>
                             </Button>
                         </Grid.Column>
