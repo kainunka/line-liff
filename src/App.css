@@ -39,3 +39,19 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.bg-grey {
+  background-color: #ADAFB1 !important;
+}
+
+.bg-yellow {
+  background-color: #F5D80D !important;
+}
+
+.color-black {
+  color: #000000 !important;
+}
+
+.color-white {
+  color: #ffffff !important;
+}
+

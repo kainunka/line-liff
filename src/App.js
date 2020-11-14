@@ -7,6 +7,7 @@ import CouponPage from './pages/Coupon'
 import { Button } from 'semantic-ui-react'
 import axios from 'axios'
 import apiUrl from './constants/api'
+import Loading from './components/Loading'
 // {
 //   displayName: "I am golf",
 //   pictureUrl: "https://profile.line-scdn.net/0h_1EPtmydAB54KSo72Yd_SURsDnMPBwZWAB0bL1wuCStTSUEfEUtHL1t-XC5XSUZPFx1PcVkvWi1d",
@@ -21,7 +22,9 @@ function App() {
     statusMessage: "Developer 🌍",
     userId: "Ud29b891ddd2e80cc644e0316f70640e8"
   })
+  const [ dataProfile, setDataProfile] = useState({})
   const [ isRegister, setRegister] = useState(false)
+  const [ isLoading, setIsLoading] = useState(true)
 
   const initailLift = async () => {
     await liff.init({ liffId: "1655237483-2mmzbkzN" }, () => {}, err => console.error(err.code, err.message));
@@ -41,25 +44,27 @@ function App() {
     const profile = await liff.getProfile()
     await setProfile(profile)
     const response = await axios.get(`${apiUrl}${ profile.userId }`)
-
     if (response.data.status) {
       setRegister(true)
+      setDataProfile(response.data.data)
     }
+    setIsLoading(false)
   }
 
 
   useEffect(() => {
     // initailLift()
     axios.get(`${apiUrl}${ profile.userId }`).then((response) => {
-      console.log(response)
         if (response.data.status) {
           setRegister(true)
+          setDataProfile(response.data.data)
         }
+        setIsLoading(false)
     })
   }, [])
 
   return Object.keys(profile).length > 0 ?
-      !isRegister ? <RegisterPage profile={ profile } /> : <CouponPage profile={ profile } />
+      isLoading ? <Loading /> : !isRegister ? <RegisterPage profile={ profile } /> : <CouponPage profile={ profile } dataProfile={ dataProfile } />
       :
       <Button onClick={ login }>กรุณเข้าสู่ระบบ</Button>
 }
