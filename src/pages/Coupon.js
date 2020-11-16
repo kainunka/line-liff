@@ -9,7 +9,7 @@ const CouponPage = props => {
     const renderCard = () => {
         return _.map(dataProfile.coupon, (value, key) => {
             return (
-                <Card key={ key } className={ value.used ? 'card-used' : '' }>
+                <Card key={ key }>
                     <Card.Content>
                         <Image
                         floated='left'
