@@ -9,7 +9,7 @@ const CouponPage = props => {
     const renderCard = () => {
         return _.map(dataProfile.coupon, (value, key) => {
             return (
-                <Card key={ key }>
+                <Card key={ key } className={ value.used ? 'card-used' : '' }>
                     <Card.Content>
                         <Image
                         floated='left'
@@ -19,7 +19,7 @@ const CouponPage = props => {
                         <Card.Header>{ value.text }</Card.Header>
                         <Card.Meta></Card.Meta>
                         <Card.Description>
-                            มูลค่า <strong>{ value.price }</strong> บาท
+                            มูลค่า <strong>{ value.price }</strong>  { value.used ? <span className="color-red">ใช้แล้ว</span> : null }
                         </Card.Description>
                     </Card.Content>
                     <Card.Content extra className="bg-grey">
